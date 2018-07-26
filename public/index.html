@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Extract Service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="https://baomoi-static.zadn.vn/zalo-news/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://baomoi-static.zadn.vn/zalo-news/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-0">
+            <h2>Web Extract Service Demo</h2>
+            <div class="form-group">
+                <label for="url">Url:</label>
+                <input id="url" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+                <button id="test" class="btn btn-primary">Extract</button>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-0">
+            <div class="article-area">
+                <h1 id="title" class="article-title"></h1>
+                <p id="extract-ref"></p>
+                <p id="byline"></p>
+                <p id="excerpt"></p>
+                <div id="body" class="body"></div>
+            </div>
+        </div>
+        <div id="relate-links" class="col-md-5 col-md-offset-0">
+
+        </div>
+    </div>
+</div>
+<script src="https://baomoi-static.zadn.vn/zalo-news/js/jquery-3.3.1.min.js"></script>
+<script src="https://baomoi-static.zadn.vn/zalo-news/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

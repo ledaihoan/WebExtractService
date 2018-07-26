@@ -1,0 +1,30 @@
+{
+  "name": "webextractservice",
+  "version": "1.0.0",
+  "description": "web extract service using Mozilla readability's core implementation",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ledaihoan/WebExtractService.git"
+  },
+  "keywords": [
+    "readability",
+    "extract"
+  ],
+  "author": "ledaihoan",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/ledaihoan/WebExtractService/issues"
+  },
+  "homepage": "https://github.com/ledaihoan/WebExtractService#readme",
+  "dependencies": {
+    "cluster": "^0.7.7",
+    "express": "^4.16.3",
+    "jsdom": "^11.11.0",
+    "readability": "github:mozilla/readability",
+    "request": "^2.87.0"
+  }
+}

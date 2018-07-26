@@ -1,0 +1,42 @@
+img, video {
+    width: 100%;
+    height: auto;
+}
+.description {
+    background-color: #EEE4E2;
+}
+.body {
+    background-color: #F5FAFA;
+}
+/*
+***reader style
+ */
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #333333;
+}
+.article-title {
+    font-size: 1.6em;
+    line-height: 1.25em;
+    width: 100%;
+    margin: 30px 0;
+    padding: 0;
+}
+.article-area p{
+    margin: -10px -10px 20px -10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.article-area * {
+    max-width: 100%;
+    height: auto;
+}
+.article-area {
+    font-size: 1.4em;
+}
+div[type=Photo] p {
+    font-size: 0.9em;
+    font-style: italic;
+    text-align: center;
+    padding: 5px;
+}
