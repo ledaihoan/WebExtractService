@@ -1,6 +1,6 @@
 #!/bin/sh
 # $2 config name
-# Example ./runservice.sh start server_21
+# Example ./runservice.sh start development
 
 if [ "x$2" != "x" ]; then
 APP_PROF="$2"
