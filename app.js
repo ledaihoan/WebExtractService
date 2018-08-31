@@ -21,7 +21,9 @@ if(cluster.isMaster) {
     let path = expressConfig.staticFiles.path;
     let dir = expressConfig.staticFiles.dir;
     const extractModel = require("./extractModel");
+    const HTTP_UTIL = require("./util/http");
     const renderModel = require("./renderModel");
+    const cheerio = require("cheerio");
     app.use(path, express.static(dir, options));
     app.get("/parse", (request, response) => {
         let url = request.query.url;
@@ -53,5 +55,31 @@ if(cluster.isMaster) {
             }
             response.end(content);
         });
-    }).listen(expressConfig.port, expressConfig.host);
+    })
+    .get("/jpsale", (request, response) => {
+        let url = request.query.url;
+        let selector = request.query.selector || ".productBuy_select_wrapper";
+        response.header('Content-Type', 'application/json');
+        HTTP_UTIL.crawlHtml(url, true, function(err, body, res) {
+            let obj = {
+                "error": false,
+                "message": ""
+            };
+            try {
+                let $ = cheerio.load(body);
+                var element = $(selector);
+                if($(selector).hasClass("add-soldout")) {
+                    obj.available = false;
+                } else {
+                    obj.available = true;
+                }
+            }
+            catch(err) {
+                obj.error = true;
+                obj.message = err.message;
+            }
+            response.end(JSON.stringify(obj));
+        });
+    })
+    .listen(expressConfig.port, expressConfig.host);
 }

@@ -3,7 +3,7 @@ local_dir=./
 server_dir=/data/services/WebExtractServices
 user=ledaihoan
 #10.30.22.241
-servers=(35.201.222.105)
+servers=(35.221.139.160)
 
 i=0
 massdeploy=0
