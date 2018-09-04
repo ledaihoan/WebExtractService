@@ -4,6 +4,9 @@ const clusterConfig  = require("./config/cluster")[env];
 
 const expressConfig = require("./config/express")[env];
 
+function decodeSelector(str) {
+    return str.replace("_hash", "#");
+}
 if(cluster.isMaster) {
     (function initChildProcesses(){
         let max_processes = clusterConfig.MAX_PROCESSES;
@@ -57,8 +60,17 @@ if(cluster.isMaster) {
         });
     })
     .get("/jpsale", (request, response) => {
+        console.time("sale process");
         let url = request.query.url;
         let selector = request.query.selector || ".productBuy_select_wrapper";
+        let avatar = request.query.avatar || ".magnify_image_wrapper";
+        let name = request.query.name || "";
+        if(name.length == 0) {
+            let regex = /.*products\/([^\/]*)\/?$/g;
+            name = url.replace(regex, "$1");
+        }
+        selector = decodeSelector(selector);
+        avatar = decodeSelector(avatar);
         response.header('Content-Type', 'application/json');
         HTTP_UTIL.crawlHtml(url, true, function(err, body, res) {
             let obj = {
@@ -73,12 +85,20 @@ if(cluster.isMaster) {
                 } else {
                     obj.available = true;
                 }
+                let avatarImg = $(avatar).find("img");
+                if(avatarImg && avatarImg.length > 0) {
+                    let avatarUrl = $(avatarImg[0]).attr("src") || "";
+                    obj.avatarUrl = avatarUrl;
+                }
+                obj.name = name;
+
             }
             catch(err) {
                 obj.error = true;
                 obj.message = err.message;
             }
             response.end(JSON.stringify(obj));
+            console.timeEnd("sale process");
         });
     })
     .listen(expressConfig.port, expressConfig.host);
