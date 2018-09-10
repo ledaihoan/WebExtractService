@@ -7,6 +7,14 @@ const expressConfig = require("./config/express")[env];
 function decodeSelector(str) {
     return str.replace("_hash", "#");
 }
+function checkSale(element, str) {
+    let idx = str.indexOf("(");
+    let idx1 = str.indexOf(")");
+    if(idx < 0 || idx1 < idx) return false;
+    let method = str.substring(0, idx);
+    let exp = str.substring(idx+1, idx1);
+    return element.hasClass(exp);
+}
 if(cluster.isMaster) {
     (function initChildProcesses(){
         let max_processes = clusterConfig.MAX_PROCESSES;
@@ -63,7 +71,8 @@ if(cluster.isMaster) {
         console.time("sale process");
         let url = request.query.url;
         let selector = request.query.selector || ".productBuy_select_wrapper";
-        let avatar = request.query.avatar || ".magnify_image_wrapper";
+        let avatar = request.query.avatar || ".js-main_image";
+        let saledetect = request.query.saledetect || "hasClass(add-soldout)";
         let name = request.query.name || "";
         if(name.length == 0) {
             let regex = /.*products\/([^\/]*)\/?$/g;
@@ -79,18 +88,25 @@ if(cluster.isMaster) {
             };
             try {
                 let $ = cheerio.load(body);
-                var element = $(selector);
-                if($(selector).hasClass("add-soldout")) {
+                let element = $(selector);
+                let check = checkSale(element, saledetect);
+                if(check) {
                     obj.available = false;
                 } else {
                     obj.available = true;
                 }
-                let avatarImg = $(avatar).find("img");
+                let avatars = [];
+                let avatarImg = $(avatar);
                 if(avatarImg && avatarImg.length > 0) {
-                    let avatarUrl = $(avatarImg[0]).attr("src") || "";
-                    obj.avatarUrl = avatarUrl;
+                    avatarImg.each(function() {
+                        var src = $(this).attr('src');
+                        if(src) {
+                            avatars.push({"src" : src});
+                        }
+                    });
                 }
                 obj.name = name;
+                obj.avatars = avatars;
 
             }
             catch(err) {
