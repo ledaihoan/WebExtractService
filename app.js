@@ -13,7 +13,29 @@ function checkSale(element, str) {
     if(idx < 0 || idx1 < idx) return false;
     let method = str.substring(0, idx);
     let exp = str.substring(idx+1, idx1);
-    return element.hasClass(exp);
+    return !element.hasClass(exp);
+}
+function isSaleTopic(href) {
+    if(!href) return false;
+    if(href.indexOf("/item/?") == -1) return false;
+    return href.indexOf("condition=") > -1 || href.indexOf("cat2Id=campaign") > -1;
+}
+let arr = ['gendId=','f='];
+function normalizeSaleTopic(link) {
+    if(!link) return link;
+    let tmp = link;
+    for(let i = 0; i < arr.length; i++) {
+        let idx = tmp.indexOf(arr[i]);
+        if(idx > -1) {
+            if(tmp.charAt(idx-1) == '&') {
+                idx--;
+            }
+            let eIdx = tmp.indexOf("&", idx);
+            if(eIdx == -1) eIdx = tmp.length;
+            tmp = tmp.substring(0, idx) + tmp.substring(eIdx+1);
+        }
+    }
+    return tmp;
 }
 if(cluster.isMaster) {
     (function initChildProcesses(){
@@ -66,6 +88,36 @@ if(cluster.isMaster) {
             }
             response.end(content);
         });
+    })
+    .get("/jpsaleTopic", (request, response) => {
+        let url = request.query.url || "https://shop.adidas.jp";
+        let domain = url;
+
+        HTTP_UTIL.crawlHtml(url, true, function(err, body, res) {
+            let obj = {
+                "error": false,
+                "result": [],
+                "message": ""
+            };
+            try {
+                let $ = cheerio.load(body);
+                $("a").each(function() {
+                    let href = $(this).attr('href');
+                    if(isSaleTopic(href)) {
+                        let link = href.startsWith("/") ? domain + href : href;
+                        link = normalizeSaleTopic(link);
+                        if(obj.result.indexOf(link) == -1) {
+                            obj.result.push(link);
+                        }
+                    }
+                })
+            }
+            catch(err) {
+                obj.error = true;
+                obj.message = err.message;
+            }
+            response.end(JSON.stringify(obj));
+        })
     })
     .get("/jpsale", (request, response) => {
         console.time("sale process");
