@@ -30,8 +30,8 @@ function normalizeSaleTopic(link) {
             if(tmp.charAt(idx-1) == '&') {
                 idx--;
             }
-            let eIdx = tmp.indexOf("&", idx);
-            if(eIdx == -1) eIdx = tmp.length;
+            let eIdx = tmp.indexOf("&", idx+1);
+            if(eIdx == -1) eIdx = tmp.length-1;
             tmp = tmp.substring(0, idx) + tmp.substring(eIdx+1);
         }
     }
