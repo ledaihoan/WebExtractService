@@ -16,7 +16,13 @@ $("#submit").click(() => {
        }
    });
 });
-
+let toggle = false;
+let codeHint = $("#codeHint");
+$("#toggle").click(() => {
+    toggle = !toggle;
+    if(toggle) codeHint.show();
+    else codeHint.hide();
+});
 let formatFeed = function(feed) {
     let groupId = $("#group-select option:selected").attr("value");
     let groupName = $("#group-select option:selected").text();
@@ -34,6 +40,6 @@ let formatFeed = function(feed) {
                 <p><em>${feed.created_time}</em></p>
                 <div>${msg}</div>
             </div>
-        </div>`;
+        </div><hr/>`;
     return html;
 };

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Facebook feed</title>
     <link rel="stylesheet" type="text/css" href="https://baomoi-static.zadn.vn/zalo-news/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://baomoi-static.zadn.vn/zalo-news/css/bootstrap-theme.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/fb.css">
 </head>
@@ -12,11 +11,11 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h2>Query</h2>
+                <h3><a>Query</a></h3>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <input id='access_token' type="text" class="form-control" placeholder="Access Token">
                 </div>
@@ -40,13 +39,42 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="query" placeholder="query logic">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button id="add-logic" class="btn btn-default">Add category</button>
+            </div>
+            <div class="col-md-3">
+                <strong>Controls: </strong>
                 <button id='submit' class="btn btn-primary">Process</button>
+                <button id='toggle' class="btn btn-primary">Toggle Hint</button>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <h2><a>Feeds</a></h2>
+                <h3><a>Feeds</a></h3>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="codeHint" style="display:none">
+        <div class="row">
+            <div class="col-sm-12">
+                <textarea rows="10" cols="120" id="hint">
+var uid = document.cookie.match(/c_user=(\d+)/)[1],
+dtsg = document.getElementsByName("fb_dtsg")[0].value,
+http = new XMLHttpRequest,
+url = "//www.facebook.com/v1.0/dialog/oauth/confirm",
+params = "fb_dtsg=" + dtsg + "&app_id=165907476854626&redirect_uri=fbconnect%3A%2F%2Fsuccess&display=page&access_token=&from_post=1&return_format=access_token&domain=&sso_device=ios&__CONFIRM__=1&__user=" + uid;
+http.open("POST", url, !0), http.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), http.onreadystatechange = function() {
+    if (4 == http.readyState && 200 == http.status) {
+        var a = http.responseText.match(/access_token=(.*)(?=&expires_in)/);
+        a = a ? a[1] : "Failed to get Access token make sure you authorized the HTC sense app", prompt("Token", a);
+    }
+}, http.send(params);
+                </textarea>
             </div>
         </div>
     </div>
@@ -66,8 +94,20 @@
             <!--</div>-->
         <!--</div>-->
     </div>
+
     <script src="https://baomoi-static.zadn.vn/zalo-news/js/jquery-3.3.1.min.js"></script>
     <script src="https://baomoi-static.zadn.vn/zalo-news/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+    <script>
+        $(document).ready(function() {
+            editor = ace.edit("hint");
+            editor.setTheme("ace/theme/chrome");
+            editor.getSession().setMode("ace/mode/javascript");
+            editor.setOption("minLines", 10);
+            editor.setOption("maxLines", 50);
+            editor.$blockScrolling = Infinity;
+        });
+    </script>
     <script src="js/fb.js"></script>
 </body>
 </html>
