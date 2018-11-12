@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Facebook feed</title>
+    <link rel="stylesheet" type="text/css" href="https://baomoi-static.zadn.vn/zalo-news/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://baomoi-static.zadn.vn/zalo-news/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/fb.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Query</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input id='access_token' type="text" class="form-control" placeholder="Access Token">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select id='group-select' class="form-control">
+                        <option value="386768301412902">Lập trình Java và Android</option>
+                        <option value="386768301412902">Lập trình Java và Android</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select id='limit-select' class="form-control">
+                        <option selected value="10">10</option>
+                        <option value="200">200</option>
+                        <option value="1000">1000</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <button id='submit' class="btn btn-primary">Process</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2><a>Feeds</a></h2>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="feeds">
+        <!--<div class="row">-->
+            <!--<div class="col-md-9">-->
+                <!--<p><a href='https://facebook.com/${feed.from.id}' target="_blank" >${feed.from.name}</a> >> <a href='https://facebook.com/${groupId}' target="_blank" >${groupName}</a></p>-->
+            <!--</div>-->
+            <!--<div class="col-md-3">-->
+                <!--<button class="btn btn-default"><a href='https://facebook.com/${feed.id}' target="_blank" >Link gốc</a></button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+            <!--<div class="col-md-12">-->
+                <!--<p><em>${feed.created_time}</em></p>-->
+                <!--<div>${msg}</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+    <script src="https://baomoi-static.zadn.vn/zalo-news/js/jquery-3.3.1.min.js"></script>
+    <script src="https://baomoi-static.zadn.vn/zalo-news/js/bootstrap.min.js"></script>
+    <script src="js/fb.js"></script>
+</body>
+</html>

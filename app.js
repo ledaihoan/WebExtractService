@@ -1,7 +1,7 @@
 const cluster = require("cluster");
 const env = process.argv[2] || process.env.NODE_ENV || 'development';
 const clusterConfig  = require("./config/cluster")[env];
-
+const bodyParser = require('body-parser');
 const expressConfig = require("./config/express")[env];
 
 function decodeSelector(str) {
@@ -54,10 +54,13 @@ if(cluster.isMaster) {
     let path = expressConfig.staticFiles.path;
     let dir = expressConfig.staticFiles.dir;
     const extractModel = require("./extractModel");
+    const facebookModel = require("./facebookModel");
     const HTTP_UTIL = require("./util/http");
     const renderModel = require("./renderModel");
     const cheerio = require("cheerio");
     app.use(path, express.static(dir, options));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.get("/parse", (request, response) => {
         let url = request.query.url;
         response.header('Content-Type', 'application/json');
@@ -167,6 +170,14 @@ if(cluster.isMaster) {
             }
             response.end(JSON.stringify(obj));
             console.timeEnd("sale process");
+        });
+    })
+    .post("/fbfeed", (request, response) => {
+        let token = request.body.access_token;
+        let limit = request.body.limit;
+        let groupId = request.body.groupId;
+        facebookModel.readGroupFeed(groupId, token, limit, function(err, res) {
+            response.json(res);
         });
     })
     .listen(expressConfig.port, expressConfig.host);
